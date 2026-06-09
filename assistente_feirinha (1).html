@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assistente da Feirinha — MPCE</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --laranja: #BA7517;
+  --laranja-claro: #FAEEDA;
+  --laranja-medio: #EF9F27;
+  --marrom: #412402;
+  --vermelho: #C0392B;
+  --verde: #3B6D11;
+  --verde-claro: #EAF3DE;
+  --bege: #FDF6E3;
+  --bege-card: #FFFBF0;
+  --borda: #FAC775;
+  --texto: #2C1A04;
+  --texto-sec: #7A5C2E;
+  --sombra: rgba(65,36,2,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bege);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* HEADER */
+.header {
+  width: 100%;
+  background: var(--marrom);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.header-left { display: flex; align-items: center; gap: 10px; }
+.avatar-header {
+  width: 38px; height: 38px;
+  background: var(--laranja-medio);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.header-info h2 { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; }
+.header-info p { font-size: 11px; color: var(--borda); }
+.online-dot {
+  width: 8px; height: 8px;
+  background: #5BC95B; border-radius: 50%;
+  display: inline-block; margin-right: 4px;
+}
+.header-badge {
+  font-size: 11px; color: var(--laranja-claro);
+  background: rgba(255,255,255,0.1);
+  padding: 3px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* CHAT WRAPPER */
+.chat-wrap {
+  width: 100%; max-width: 600px;
+  display: flex; flex-direction: column;
+  height: calc(100vh - 62px);
+}
+
+/* MENSAGENS */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+.messages::-webkit-scrollbar { width: 4px; }
+.messages::-webkit-scrollbar-thumb { background: var(--borda); border-radius: 2px; }
+
+.msg { display: flex; gap: 8px; align-items: flex-end; max-width: 100%; }
+.msg.bot { flex-direction: row; }
+.msg.user { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 32px; height: 32px;
+  background: var(--laranja-medio);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--texto);
+}
+.msg.bot .bubble {
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px var(--sombra);
+}
+.msg.user .bubble {
+  background: var(--laranja);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.bubble b { font-weight: 700; }
+.bubble a { color: var(--laranja); font-weight: 600; text-decoration: underline; }
+.msg.user .bubble a { color: #ffe8b0; }
+
+/* CHIPS DE OPÇÃO */
+.chips-wrap {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  background: var(--bege-card);
+  border: 1.5px solid var(--borda);
+  color: var(--marrom);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chip:hover { background: var(--laranja-claro); border-color: var(--laranja); }
+.chip:active { transform: scale(0.97); }
+
+/* LINK CARD */
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--laranja-claro);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.link-card:hover { background: #f5ddb0; }
+.link-card-icon {
+  width: 34px; height: 34px;
+  background: var(--laranja);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.link-card-text { font-size: 13px; color: var(--marrom); font-weight: 600; line-height: 1.4; }
+.link-card-sub { font-size: 11px; color: var(--texto-sec); font-weight: 400; }
+
+/* STEP CARD */
+.step-card {
+  background: var(--bege-card);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--texto);
+}
+.step-card .step-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--laranja);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.step-card ol { padding-left: 1.2rem; }
+.step-card ol li { margin-bottom: 4px; }
+.badge-validade {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+.badge-verde { background: var(--verde-claro); color: var(--verde); }
+.badge-laranja { background: var(--laranja-claro); color: #7A4A00; }
+
+/* INPUT AREA */
+.input-area {
+  padding: 0.75rem 1rem 1rem;
+  background: var(--bege);
+  border-top: 1px solid var(--borda);
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.input-area textarea {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--borda);
+  background: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: var(--texto);
+  resize: none;
+  max-height: 100px;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-area textarea:focus { border-color: var(--laranja); }
+.input-area textarea::placeholder { color: #b0926a; }
+.btn-send {
+  width: 42px; height: 42px;
+  background: var(--laranja);
+  border: none;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  font-size: 18px;
+  color: white;
+}
+.btn-send:hover { background: var(--marrom); }
+.btn-send:disabled { background: var(--borda); cursor: not-allowed; }
+
+/* TYPING */
+.typing { display: flex; align-items: center; gap: 4px; padding: 10px 14px; }
+.typing span {
+  width: 7px; height: 7px;
+  background: var(--borda);
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%,60%,100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* PROGRESS BAR */
+.progress-bar-wrap {
+  padding: 0.5rem 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-label { font-size: 11px; color: var(--texto-sec); font-weight: 600; white-space: nowrap; }
+.progress-bar {
+  flex: 1; height: 6px;
+  background: var(--borda);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--laranja), var(--laranja-medio));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+@media(max-width: 600px) {
+  .bubble { max-width: 88%; font-size: 13px; }
+  .chip { font-size: 12px; padding: 6px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="avatar-header">🌻</div>
+    <div class="header-info">
+      <h2>Assistente da Feirinha</h2>
+      <p><span class="online-dot"></span>Online agora · MPCE</p>
+    </div>
+  </div>
+  <div class="header-badge">Edição Junina</div>
+</div>
+
+<div class="chat-wrap">
+  <div class="progress-bar-wrap" id="progressWrap" style="display:none">
+    <span class="progress-label" id="progressLabel">Documento 0/7</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+  <div class="chips-wrap" id="chips"></div>
+
+  <div class="input-area">
+    <textarea id="userInput" rows="1" placeholder="Digite sua dúvida aqui..." oninput="autoResize(this)"></textarea>
+    <button class="btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar">➤</button>
+  </div>
+</div>
+
+<script>
+// ── DADOS DOS DOCUMENTOS ───────────────────────────────────────────────────
+const DOCS = [
+  {
+    id: 'cpf',
+    nome: 'Regularização do CPF',
+    orgao: 'Receita Federal',
+    emoji: '🪪',
+    link: 'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp',
+    linkLabel: 'Acessar site da Receita Federal',
+    validade: 'Emitido na hora · Gratuito',
+    validadeTipo: 'verde',
+    passos: [
+      'Abra o link abaixo no seu celular ou computador',
+      'Digite o seu <b>CPF</b> no campo indicado',
+      'Digite também a sua <b>data de nascimento</b>',
+      'Clique em <b>Consultar</b>',
+      'Vai aparecer a situação do seu CPF — salve ou tire uma foto da tela',
+      'Se pedir para salvar em PDF, clique em <b>Imprimir</b> e escolha <b>"Salvar como PDF"</b>',
+    ],
+    duvidas: [
+      { p: 'Não sei meu CPF', r: 'Você pode encontrar seu CPF na carteira de identidade (RG), no cartão do CPF, ou em qualquer documento oficial seu. Também pode consultar em qualquer agência dos Correios levando um documento com foto.' },
+      { p: 'Apareceu uma mensagem de erro', r: 'Tente abrir o link em outro navegador, como o Google Chrome. Se o problema continuar, tente novamente mais tarde ou peça ajuda a alguém de confiança.' },
+      { p: 'Não sei como salvar em PDF', r: 'Quando a página abrir com o resultado, pressione as teclas <b>Ctrl + P</b> (no computador) ou o botão de compartilhar no celular. Em seguida, escolha a opção <b>"Salvar como PDF"</b> ou <b>"Imprimir em PDF"</b>.' },
+    ]
+  },
+  {
+    id: 'endereco',
+    nome: 'Comprovante de endereço',
+    orgao: 'Conta de luz, água, internet etc.',
+    emoji: '🏠',
+    link: null,
+    linkLabel: null,
+    validade: 'Deve ter até 90 dias · Gratuito',
+    validadeTipo: 'laranja',
+    passos: [
+      'Procure uma conta de <b>luz, água, gás, internet ou condomínio</b> em seu nome',
+      'A conta precisa ter sido emitida nos <b>últimos 90 dias</b>',
+      'Pode ser a conta física (papel) ou digital (PDF no aplicativo)',
+      'Se for papel, tire uma foto nítida dos dois lados',
+      'Se for digital, abra o app da empresa (ex: Enel, Cagece) e baixe o PDF',
+      'Confira se aparece seu <b>nome e endereço</b> no documento',
+    ],
+    duvidas: [
+      { p: 'A conta não está no meu nome', r: 'Se a conta estiver no nome de um familiar que mora com você, pode ser aceita. Guarde também um documento que comprove o parentesco, como certidão de nascimento ou casamento.' },
+      { p: 'Só tenho conta digital, serve?', r: 'Sim! Conta digital em PDF é aceita normalmente. Abra o aplicativo da empresa de energia ou água, acesse a fatura mais recente e salve ou compartilhe como PDF.' },
+      { p: 'Minha conta é mais antiga que 90 dias', r: 'Infelizmente não é válida. Verifique se chegou uma conta mais recente, ou acesse o aplicativo ou site da empresa para baixar a fatura do mês atual.' },
+    ]
+  },
+  {
+    id: 'tjce',
+    nome: 'Certidão de Antecedentes — TJCE',
+    orgao: 'Tribunal de Justiça do Ceará',
+    emoji: '⚖️',
+    link: 'https://sirece.tjce.jus.br/sirece-web/nova/solicitacao.jsf',
+    linkLabel: 'Acessar site do TJCE',
+    validade: 'Válida por 90 dias · Gratuita',
+    validadeTipo: 'laranja',
+    passos: [
+      'Abra o link abaixo — é o site oficial do Tribunal de Justiça do Ceará',
+      'Clique em <b>Nova Solicitação</b>',
+      'Preencha os campos com seu <b>nome completo</b>, <b>CPF</b> e <b>data de nascimento</b>',
+      'Clique em <b>Solicitar</b>',
+      'O sistema vai gerar a certidão — clique em <b>Baixar PDF</b> ou <b>Imprimir</b>',
+      'Salve o arquivo no seu celular ou computador',
+    ],
+    duvidas: [
+      { p: 'O site ficou fora do ar', r: 'Sites do governo às vezes ficam instáveis. Tente novamente em alguns minutos ou em outro horário. Se possível, acesse pelo computador usando o navegador Google Chrome.' },
+      { p: 'Não apareceu o botão de baixar', r: 'Role a página para baixo após clicar em Solicitar. O botão de download geralmente aparece no final da página. Se não aparecer, tente usar o atalho Ctrl+P para imprimir e salvar como PDF.' },
+      { p: 'Apareceu que tenho antecedentes', r: 'Não se preocupe ainda. Entrar em contato com a equipe da Feirinha pelo e-mail desenvolvimento@mpce.mp.br para verificar se isso impede sua participação.' },
+    ]
+  },
+  {
+    id: 'jfce',
+    nome: 'Certidão — Justiça Federal (JFCE)',
+    orgao: 'Conselho da Justiça Federal',
+    emoji: '🏛️',
+    link: 'https://certidao-unificada.cjf.jus.br/#/solicitacao-certidao',
+    linkLabel: 'Acessar sistema CJF',
+    validade: 'Válida por 180 dias · Gratuita',
+    validadeTipo: 'verde',
+    passos: [
+      'Abra o link abaixo — é o sistema oficial do Conselho da Justiça Federal',
+      'Selecione a opção <b>Pessoa Física</b>',
+      'Digite seu <b>CPF</b> e clique em <b>Buscar</b>',
+      'Confirme seus dados pessoais que aparecerem na tela',
+      'Clique em <b>Emitir Certidão</b>',
+      'Baixe o PDF gerado — ele vai ter um <b>QR Code</b> de autenticação',
+    ],
+    duvidas: [
+      { p: 'Pede para criar uma conta', r: 'Alguns sistemas pedem cadastro. Clique em "Criar conta" ou "Cadastrar", use seu CPF e e-mail, confirme pelo e-mail que receber e volte para emitir a certidão.' },
+      { p: 'Não encontrou meu CPF', r: 'Verifique se digitou o CPF corretamente, sem pontos ou traços. Se continuar sem encontrar, tente digitar apenas os números.' },
+      { p: 'O que é QR Code de autenticação?', r: 'É um quadradinho com pontos pretos que aparece no PDF — parecido com os QR Codes de pagamento. Ele garante que o documento é oficial. Não precisa fazer nada com ele, só garantir que aparece no arquivo.' },
+    ]
+  },
+  {
+    id: 'stm',
+    nome: 'Certidão — Justiça Militar (STM)',
+    orgao: 'Superior Tribunal Militar',
+    emoji: '🎖️',
+    link: 'https://www.stm.jus.br/servicos-ao-cidadao/atendimentoaocidadao/certidao-negativa',
+    linkLabel: 'Acessar site do STM',
+    validade: 'Emitida na hora · Gratuita',
+    validadeTipo: 'verde',
+    passos: [
+      'Abra o link abaixo — é o site do Superior Tribunal Militar',
+      'Procure a opção <b>Certidão Negativa</b> ou <b>Solicitação de Certidão</b>',
+      'Preencha com seu <b>nome completo</b> e <b>CPF</b>',
+      'Clique em <b>Solicitar</b> ou <b>Emitir</b>',
+      'O sistema vai gerar a certidão automaticamente',
+      'Clique em <b>Baixar</b> ou <b>Salvar PDF</b>',
+    ],
+    duvidas: [
+      { p: 'Nunca servi ao Exército, preciso mesmo?', r: 'Sim, mesmo quem nunca serviu precisa emitir essa certidão. O sistema simplesmente vai informar que não há registros em seu nome, o que é normal para a maioria das pessoas.' },
+      { p: 'O site está diferente do descrito', r: 'Os sites governamentais mudam de layout às vezes. Procure na página inicial por "certidão" ou "serviços ao cidadão". Se tiver dúvida, entre em contato com a equipe da Feirinha.' },
+    ]
+  },
+  {
+    id: 'trece',
+    nome: 'Certidão — Justiça Eleitoral (TRE-CE)',
+    orgao: 'Tribunal Regional Eleitoral do Ceará',
+    emoji: '🗳️',
+    link: 'https://www.tre-ce.jus.br',
+    linkLabel: 'Acessar site do TRE-CE',
+    validade: 'Válida por 90 dias · Gratuita',
+    validadeTipo: 'laranja',
+    passos: [
+      'Abra o link abaixo — é o site do TRE-CE',
+      'Procure o menu <b>Certidões</b> ou <b>Serviços ao Eleitor</b>',
+      'Selecione <b>Certidão de Quitação Eleitoral e Antecedentes</b>',
+      'Digite seu <b>CPF</b> ou número do <b>Título de Eleitor</b>',
+      'Confirme seus dados e clique em <b>Emitir</b>',
+      'Baixe o PDF gerado',
+    ],
+    duvidas: [
+      { p: 'Não sei o número do título de eleitor', r: 'Você pode usar o CPF no lugar do título de eleitor na maioria dos sistemas eleitorais. Se precisar do título, ele está no aplicativo e-Título, disponível gratuitamente no celular.' },
+      { p: 'Apareceu que estou com débito eleitoral', r: 'Isso pode acontecer se você não votou sem justificar. Consulte o site do TSE ou TRE para regularizar a situação antes de emitir a certidão.' },
+    ]
+  },
+  {
+    id: 'tse',
+    nome: 'Certidão de Quitação Eleitoral — TSE',
+    orgao: 'Tribunal Superior Eleitoral',
+    emoji: '📋',
+    link: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral#/certidoes-eleitor/certidao-quitacao-eleitoral',
+    linkLabel: 'Acessar sistema TSE',
+    validade: 'Emitida na hora · Gratuita',
+    validadeTipo: 'verde',
+    passos: [
+      'Abra o link abaixo — é o Autoatendimento Eleitoral do TSE',
+      'Clique em <b>Certidões do Eleitor</b>',
+      'Selecione <b>Certidão de Quitação Eleitoral</b>',
+      'Digite seu <b>CPF</b> e clique em <b>Consultar</b>',
+      'Confirme seus dados pessoais',
+      'Clique em <b>Emitir Certidão</b> e baixe o PDF',
+    ],
+    duvidas: [
+      { p: 'Qual a diferença entre essa e a do TRE-CE?', r: 'A certidão do TRE-CE é estadual e inclui antecedentes criminais eleitorais. A do TSE é federal e confirma que você está quite com suas obrigações eleitorais (votação). Ambas são necessárias.' },
+      { p: 'Pede para entrar com o Gov.br', r: 'O Gov.br é o login unificado do governo federal. Se ainda não tem, clique em "Criar conta" e siga os passos. Você precisará do CPF e de um e-mail. É gratuito e seguro.' },
+    ]
+  }
+];
+
+// ── ESTADO ─────────────────────────────────────────────────────────────────
+let currentDoc = -1;
+let currentStep = 'menu';
+let concluidosDocs = new Set();
+let aguardandoResposta = false;
+
+// ── FUNÇÕES DE UI ──────────────────────────────────────────────────────────
+function scrollBottom() {
+  const m = document.getElementById('messages');
+  setTimeout(() => m.scrollTop = m.scrollHeight, 100);
+}
+
+function addMsg(text, type = 'bot', html = false) {
+  const m = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  if (type === 'bot') {
+    div.innerHTML = `<div class="msg-avatar">🌻</div><div class="bubble">${html ? text : escHtml(text)}</div>`;
+  } else {
+    div.innerHTML = `<div class="bubble">${html ? text : escHtml(text)}</div>`;
+  }
+  m.appendChild(div);
+  scrollBottom();
+}
+
+function addCard(html) {
+  const m = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `<div class="msg-avatar" style="visibility:hidden">🌻</div><div>${html}</div>`;
+  m.appendChild(div);
+  scrollBottom();
+}
+
+function showTyping() {
+  const m = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typing-indicator';
+  div.innerHTML = `<div class="msg-avatar">🌻</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  m.appendChild(div);
+  scrollBottom();
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function setChips(chips) {
+  const c = document.getElementById('chips');
+  c.innerHTML = '';
+  chips.forEach(({ label, action }) => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = label;
+    btn.onclick = () => handleChip(action, label);
+    c.appendChild(btn);
+  });
+}
+
+function clearChips() { document.getElementById('chips').innerHTML = ''; }
+
+function updateProgress() {
+  const wrap = document.getElementById('progressWrap');
+  const label = document.getElementById('progressLabel');
+  const fill = document.getElementById('progressFill');
+  if (concluidosDocs.size === 0 && currentDoc === -1) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'flex';
+  const total = DOCS.length;
+  const done = concluidosDocs.size;
+  label.textContent = `Documento ${done}/${total}`;
+  fill.style.width = `${(done / total) * 100}%`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function botSay(text, delay = 600) {
+  return new Promise(resolve => {
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      addMsg(text, 'bot', true);
+      resolve();
+    }, delay);
+  });
+}
+
+// ── FLUXO PRINCIPAL ────────────────────────────────────────────────────────
+async function startFlow() {
+  await botSay('Olá! 👋 Seja bem-vindo ao <b>Assistente da Feirinha de Empreendedores do MPCE</b>!', 700);
+  await botSay('Estou aqui para te ajudar a emitir cada documento necessário para participar da Feirinha. Vamos fazer isso juntos, um de cada vez. 😊', 1200);
+  showMenu();
+}
+
+function showMenu() {
+  currentStep = 'menu';
+  const chips = DOCS.map((d, i) => ({
+    label: `${concluidosDocs.has(i) ? '✅' : d.emoji} ${d.nome}`,
+    action: `doc_${i}`
+  }));
+  chips.push({ label: '❓ Tenho outra dúvida', action: 'outra_duvida' });
+  if (concluidosDocs.size === DOCS.length) {
+    chips.push({ label: '🎉 Terminei tudo!', action: 'finalizado' });
+  }
+
+  const pendentes = DOCS.length - concluidosDocs.size;
+  if (concluidosDocs.size === 0) {
+    addMsg('Por qual documento quer começar? Pode escolher na ordem que preferir! 👇', 'bot', true);
+  } else if (pendentes > 0) {
+    addMsg(`Ótimo! Você já concluiu <b>${concluidosDocs.size}</b> de <b>${DOCS.length}</b> documentos. Qual quer fazer agora? 👇`, 'bot', true);
+  } else {
+    addMsg('Uau! Você concluiu <b>todos os documentos</b>! 🎉', 'bot', true);
+  }
+  setChips(chips);
+}
+
+async function showDoc(idx) {
+  clearChips();
+  currentDoc = idx;
+  currentStep = 'doc_intro';
+  const doc = DOCS[idx];
+
+  await botSay(`Ótima escolha! Vamos emitir a <b>${doc.nome}</b> (${doc.orgao}). 📄`, 600);
+
+  // Montar card com passos
+  const passosHtml = doc.passos.map((p, i) => `<li>${p}</li>`).join('');
+  const badgeClass = doc.validadeTipo === 'verde' ? 'badge-verde' : 'badge-laranja';
+  let cardHtml = `<div class="step-card"><div class="step-title">Passo a passo</div><ol>${passosHtml}</ol><span class="badge-validade ${badgeClass}">${doc.validade}</span></div>`;
+  if (doc.link) {
+    cardHtml += `<a class="link-card" href="${doc.link}" target="_blank"><div class="link-card-icon">🔗</div><div class="link-card-text">${doc.linkLabel}<div class="link-card-sub">${doc.link.length > 45 ? doc.link.substring(0,45)+'...' : doc.link}</div></div></a>`;
+  }
+
+  setTimeout(() => {
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      addCard(cardHtml);
+      scrollBottom();
+      setTimeout(() => {
+        addMsg('Conseguiu abrir o site? Precisa de ajuda com algum dos passos? 😊', 'bot', true);
+        const chips = doc.duvidas.map((d, i) => ({ label: d.p, action: `duvida_${idx}_${i}` }));
+        chips.push({ label: '✅ Consegui emitir! Próximo documento', action: `concluir_${idx}` });
+        chips.push({ label: '🔙 Voltar ao menu', action: 'menu' });
+        setChips(chips);
+        currentStep = 'doc_duvidas';
+      }, 400);
+    }, 900);
+  }, 300);
+}
+
+async function handleChip(action, label) {
+  clearChips();
+  addMsg(label, 'user');
+
+  if (action.startsWith('doc_')) {
+    const idx = parseInt(action.split('_')[1]);
+    await showDoc(idx);
+    return;
+  }
+
+  if (action.startsWith('duvida_')) {
+    const parts = action.split('_');
+    const docIdx = parseInt(parts[1]);
+    const duvIdx = parseInt(parts[2]);
+    const duvida = DOCS[docIdx].duvidas[duvIdx];
+    await botSay(duvida.r, 800);
+    const chips = DOCS[docIdx].duvidas.map((d, i) => ({ label: d.p, action: `duvida_${docIdx}_${i}` }));
+    chips.push({ label: '✅ Consegui emitir! Próximo documento', action: `concluir_${docIdx}` });
+    chips.push({ label: '🔙 Voltar ao menu', action: 'menu' });
+    setChips(chips);
+    return;
+  }
+
+  if (action.startsWith('concluir_')) {
+    const idx = parseInt(action.split('_')[1]);
+    concluidosDocs.add(idx);
+    updateProgress();
+    const msgs = [
+      'Arrasou! 🥳 Documento emitido com sucesso!',
+      'Perfeito! Mais um documento na lista! ✅',
+      'Que ótimo! Tá indo muito bem! 🌟',
+      'Parabéns! Você está quase lá! 💪',
+    ];
+    await botSay(msgs[Math.floor(Math.random() * msgs.length)], 600);
+    showMenu();
+    return;
+  }
+
+  if (action === 'menu') {
+    showMenu();
+    return;
+  }
+
+  if (action === 'finalizado') {
+    clearChips();
+    await botSay('🎉 <b>Parabéns!</b> Você emitiu todos os documentos necessários!', 700);
+    await botSay('Agora é só acessar o formulário oficial da Feirinha, preencher seus dados e fazer o upload de cada documento. Boa sorte e até a Feirinha! 🌻', 1200);
+    addCard(`<a class="link-card" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=bzZrh2mlhk2wysS1YiPp8R7wfpVkz55Dp8fHRjSaL4NUNDk1Q1JEUDI3SUJRWVdZWUM0N1I4OUJJRi4u" target="_blank"><div class="link-card-icon">📝</div><div class="link-card-text">Ir para o formulário oficial<div class="link-card-sub">Microsoft Forms — MPCE</div></div></a>`);
+    return;
+  }
+
+  if (action === 'outra_duvida') {
+    const msg = encodeURIComponent('Olá! Preciso de ajuda com a Feirinha de Empreendedores do MPCE.');
+    const waUrl = 'https://wa.me/5585985633675?text=' + msg;
+    await botSay('Claro! Para dúvidas além dos documentos, nossa equipe vai te atender pelo WhatsApp. 😊 Digite sua dúvida abaixo e te conecto com o atendimento!', 600);
+    currentStep = 'livre';
+    return;
+  }
+}
+
+// ── ENVIO LIVRE VIA API ────────────────────────────────────────────────────
+async function sendUserMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = ''; autoResize(input);
+  addMsg(text, 'user');
+  clearChips();
+
+  // Montar mensagem pré-preenchida para o WhatsApp
+  const msg = encodeURIComponent('Olá! Preciso de ajuda com a Feirinha de Empreendedores do MPCE.
+
+Minha dúvida: ' + text);
+  const waUrl = 'https://wa.me/5585985633675?text=' + msg;
+
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    addMsg('Entendido! 😊 Para te ajudar melhor, vou te conectar com nossa equipe de atendimento no WhatsApp. Clique no botão abaixo e já envie sua dúvida!', 'bot', true);
+    addCard(`<a class="link-card" href="${waUrl}" target="_blank">
+      <div class="link-card-icon" style="background:#25D366;font-size:22px">📲</div>
+      <div class="link-card-text">Falar com a equipe no WhatsApp<div class="link-card-sub">Sua dúvida já estará pré-preenchida na mensagem</div></div>
+    </a>`);
+    setChips([
+      { label: '📋 Voltar aos documentos', action: 'menu' },
+      { label: '❓ Tenho outra dúvida', action: 'outra_duvida' },
+    ]);
+  }, 800);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+document.getElementById('userInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendUserMessage(); }
+});
+
+// INIT
+window.onload = () => startFlow();
+</script>
+</body>
+</html>

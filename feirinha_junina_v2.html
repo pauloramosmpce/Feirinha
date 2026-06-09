@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feirinha de Empreendedores — Edição Junina | MPCE</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#FDF6E3;color:#222;min-height:100vh;padding:1.5rem 1rem}
+.wrap{max-width:640px;margin:0 auto}
+.header{text-align:center;padding:1.75rem 1.5rem 1.5rem;background:#FFFBF0;border-radius:12px;border:1px solid #EF9F27;margin-bottom:1.25rem}
+.bandeiras{display:flex;justify-content:center;gap:4px;margin-bottom:1rem;flex-wrap:wrap}
+.band{width:18px;height:22px;border-radius:2px 2px 0 0;display:inline-block}
+.edition-ribbon{display:inline-block;background:#C0392B;color:#fff;font-size:13px;font-weight:600;padding:5px 20px;border-radius:999px;margin-bottom:0.5rem;letter-spacing:0.5px}
+.header h1{font-size:24px;font-weight:600;color:#412402;margin-bottom:0.25rem}
+.header-meta{display:flex;justify-content:center;gap:16px;font-size:12px;color:#854F0B;margin-top:0.5rem;flex-wrap:wrap}
+.header-meta span{display:flex;align-items:center;gap:4px}
+.intro-card{background:#FFFBF0;border:1px solid #FAC775;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:13px;color:#633806;line-height:1.7}
+.progress{height:4px;background:#FAC775;border-radius:2px;margin-bottom:1.25rem}
+.progress-bar{height:4px;background:#BA7517;border-radius:2px;transition:width .3s}
+.steps{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.step-pill{font-size:12px;padding:5px 14px;border-radius:999px;border:1px solid #EF9F27;color:#854F0B;background:#FAEEDA;cursor:pointer;transition:all .15s;white-space:nowrap}
+.step-pill.active{background:#BA7517;color:#FAEEDA;border-color:#BA7517;font-weight:600}
+.section{display:none}
+.section.active{display:block}
+.sec-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:0.25rem;display:flex;align-items:center;gap:8px}
+.sec-title i{font-size:18px;color:#BA7517}
+.sec-desc{font-size:13px;color:#666;margin-bottom:1rem}
+.doc-card{border:1px solid #FAC775;border-radius:12px;padding:1rem 1.25rem;margin-bottom:0.9rem;background:#FFFBF0}
+.doc-header{display:flex;align-items:center;gap:10px;margin-bottom:0.6rem}
+.doc-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc-name{font-size:14px;font-weight:600;color:#412402}
+.doc-sub{font-size:12px;color:#854F0B}
+.doc-steps{font-size:12px;color:#555;line-height:1.8;margin-bottom:0.75rem;border-left:2px solid #FAC775;padding-left:10px}
+.doc-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.badges{display:flex;gap:5px;flex-wrap:wrap}
+.badge-g{font-size:11px;padding:2px 8px;border-radius:999px;background:#EAF3DE;color:#3B6D11}
+.badge-a{font-size:11px;padding:2px 8px;border-radius:999px;background:#FAEEDA;color:#854F0B}
+.link-btn{font-size:12px;color:#0C447C;text-decoration:none;display:inline-flex;align-items:center;gap:4px;border:1px solid #B5D4F4;padding:4px 10px;border-radius:8px;background:#E6F1FB;transition:background .15s}
+.link-btn:hover{background:#B5D4F4}
+.warn-box{background:#FAECE7;border:1px solid #F0997B;border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#4A1B0C;display:flex;gap:8px;align-items:flex-start}
+.warn-box i{font-size:16px;flex-shrink:0;color:#993C1D;margin-top:1px}
+.info-box{background:#FAEEDA;border:1px solid #FAC775;border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#633806;display:flex;gap:8px;align-items:flex-start}
+.info-box i{font-size:16px;flex-shrink:0;margin-top:1px}
+.success-box{background:#EAF3DE;border:1px solid #97C459;border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#1E4006;display:flex;gap:8px;align-items:flex-start}
+.success-box i{font-size:16px;flex-shrink:0;margin-top:1px}
+.rules-list{font-size:13px;color:#222;line-height:1.9;padding-left:1.25rem}
+.rules-list li{margin-bottom:4px}
+.rules-list li strong{color:#C0392B}
+.check-group{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.check-group label{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#222;font-weight:400;cursor:pointer;line-height:1.5}
+.check-group input[type=checkbox]{accent-color:#BA7517;width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.nav-btns{display:flex;justify-content:space-between;margin-top:1.25rem;gap:10px}
+.btn-prev{font-size:14px;color:#854F0B;background:#FFFBF0;border:1px solid #FAC775;padding:8px 18px;border-radius:8px;cursor:pointer}
+.btn-next{font-size:14px;color:#412402;background:#EF9F27;border:1px solid #BA7517;padding:8px 24px;border-radius:8px;cursor:pointer;font-weight:600;flex:1}
+
+/* BOTÃO FINAL DE REDIRECIONAMENTO */
+.btn-forms{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 24px;background:#BA7517;border:none;border-radius:12px;color:#FFFBF0;font-size:16px;font-weight:600;cursor:pointer;margin-top:1.25rem;text-decoration:none;transition:background .2s;box-shadow:0 2px 8px rgba(186,117,23,.25)}
+.btn-forms:hover{background:#9A5F0F}
+.btn-forms i{font-size:22px}
+.forms-hint{text-align:center;font-size:12px;color:#854F0B;margin-top:0.6rem}
+
+/* CHECKLIST DE CERTIDÕES */
+.cert-checklist{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
+.cert-check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid #FAC775;background:#FFFBF0;font-size:13px;color:#412402;cursor:pointer;transition:background .15s}
+.cert-check-item:hover{background:#FAEEDA}
+.cert-check-item input[type=checkbox]{accent-color:#BA7517;width:16px;height:16px;flex-shrink:0}
+.cert-check-item.checked{background:#EAF3DE;border-color:#97C459;color:#1E4006}
+.cert-num{font-size:11px;background:#FAC775;color:#412402;border-radius:999px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.cert-check-item.checked .cert-num{background:#97C459;color:#1E4006}
+
+@media(max-width:500px){.header-meta{flex-direction:column;gap:6px}.steps{gap:4px}.step-pill{font-size:11px;padding:4px 10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <div class="bandeiras">
+      <span class="band" style="background:#C0392B"></span><span class="band" style="background:#F1C40F"></span><span class="band" style="background:#27AE60"></span><span class="band" style="background:#2980B9"></span><span class="band" style="background:#C0392B"></span><span class="band" style="background:#F1C40F"></span><span class="band" style="background:#27AE60"></span><span class="band" style="background:#2980B9"></span><span class="band" style="background:#C0392B"></span><span class="band" style="background:#F1C40F"></span><span class="band" style="background:#27AE60"></span><span class="band" style="background:#2980B9"></span>
+    </div>
+    <div class="edition-ribbon">✦ Edição Junina ✦</div>
+    <h1>Feirinha de Empreendedores</h1>
+    <div style="font-size:12px;color:#854F0B;margin-top:2px;font-weight:600">Ministério Público do Estado do Ceará</div>
+    <div class="header-meta">
+      <span><i class="ti ti-calendar"></i> 10 de junho</span>
+      <span><i class="ti ti-clock"></i> 9h às 15h</span>
+      <span><i class="ti ti-map-pin"></i> Espaço de Convivência</span>
+      <span><i class="ti ti-users"></i> 25 vagas</span>
+    </div>
+  </div>
+
+  <!-- PROGRESSO -->
+  <div class="progress"><div class="progress-bar" id="pbar" style="width:25%"></div></div>
+
+  <!-- ETAPAS -->
+  <div class="steps">
+    <div class="step-pill active" onclick="goTo(0)">1. Sobre a feira</div>
+    <div class="step-pill" onclick="goTo(1)">2. Certidões</div>
+    <div class="step-pill" onclick="goTo(2)">3. Regras</div>
+    <div class="step-pill" onclick="goTo(3)">4. Enviar</div>
+  </div>
+
+  <!-- SEÇÃO 1: SOBRE A FEIRA -->
+  <div class="section active" id="s0">
+    <div class="sec-title"><i class="ti ti-info-circle"></i> Sobre a Feirinha</div>
+    <div class="sec-desc">Leia as informações antes de iniciar o cadastro.</div>
+    <div class="intro-card">
+      <strong>Olá, tudo bem?</strong> Agradecemos seu interesse em participar da nossa Feirinha!<br><br>
+      <strong>Formato:</strong> Rodízio entre expositores por modalidade de produtos.<br>
+      <strong>Vagas:</strong> 25 vagas mensais — essa é nossa capacidade máxima!<br>
+      <strong>Frequência:</strong> Todo mês, na segunda quarta-feira.<br>
+      <strong>Critério de seleção:</strong> Prioridade para quem não participou no mês anterior.<br>
+      <strong>Vagas remanescentes:</strong> Preenchidas por ordem cronológica de inscrição.<br>
+      <strong>Comunicação:</strong> Orientações e atualizações via grupo no WhatsApp.<br><br>
+      Se tiver interesse, é só preencher este formulário. Será um prazer contar com você! ✦
+    </div>
+    <div class="success-box"><i class="ti ti-list-check"></i> <span>Este formulário tem <strong>4 etapas</strong>: informações sobre a feira, orientação para emissão das certidões, regras do evento e envio do cadastro.</span></div>
+    <div class="nav-btns"><div></div><button class="btn-next" onclick="goTo(1)">Próximo <i class="ti ti-arrow-right"></i></button></div>
+  </div>
+
+  <!-- SEÇÃO 2: CERTIDÕES -->
+  <div class="section" id="s1">
+    <div class="sec-title"><i class="ti ti-file-certificate"></i> Certidões e documentos obrigatórios</div>
+    <div class="sec-desc">Emita cada documento clicando em "Emitir agora". Marque cada um conforme for baixando.</div>
+
+    <div class="info-box"><i class="ti ti-info-circle"></i> Todos os documentos são gratuitos e emitidos online. Você precisará enviá-los na próxima etapa pelo Microsoft Forms.</div>
+
+    <!-- CPF -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#FAEEDA"><i class="ti ti-id" style="color:#BA7517;font-size:18px"></i></div>
+        <div><div class="doc-name">1. Regularização cadastral do CPF</div><div class="doc-sub">Receita Federal</div></div>
+      </div>
+      <div class="doc-steps">Acesse o site → informe o CPF → consulte a situação cadastral → salve o comprovante em PDF.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuito</span><span class="badge-g">Emitido na hora</span></div>
+        <a class="link-btn" href="https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- ENDEREÇO -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#EAF3DE"><i class="ti ti-home" style="color:#3B6D11;font-size:18px"></i></div>
+        <div><div class="doc-name">2. Comprovante de endereço</div><div class="doc-sub">Conta de luz, água, condomínio, internet etc.</div></div>
+      </div>
+      <div class="doc-steps">Utilize uma conta recente (últimos 90 dias) em seu nome ou de familiar residente. Tire foto ou digitalize em PDF.</div>
+      <div class="doc-footer"><div class="badges"><span class="badge-a">Últimos 90 dias</span></div></div>
+    </div>
+
+    <!-- TJCE -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#FAECE7"><i class="ti ti-shield" style="color:#993C1D;font-size:18px"></i></div>
+        <div><div class="doc-name">3. Certidão de antecedentes criminais — TJCE</div><div class="doc-sub">Tribunal de Justiça do Ceará</div></div>
+      </div>
+      <div class="doc-steps">Acesse o link → Nova Solicitação → informe CPF e dados pessoais → baixe o PDF gerado.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuita</span><span class="badge-a">Válida 90 dias</span></div>
+        <a class="link-btn" href="https://sirece.tjce.jus.br/sirece-web/nova/solicitacao.jsf" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- JFCE -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#E6F1FB"><i class="ti ti-building-bank" style="color:#185FA5;font-size:18px"></i></div>
+        <div><div class="doc-name">4. Certidão de antecedentes — Justiça Federal no Ceará</div><div class="doc-sub">JFCE / CJF</div></div>
+      </div>
+      <div class="doc-steps">Acesse o link → Solicitação de Certidão Unificada → informe CPF → preencha os dados → baixe o PDF com QR Code.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuita</span><span class="badge-g">Válida 180 dias</span></div>
+        <a class="link-btn" href="https://certidao-unificada.cjf.jus.br/#/solicitacao-certidao" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- STM -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#EEEDFE"><i class="ti ti-gavel" style="color:#534AB7;font-size:18px"></i></div>
+        <div><div class="doc-name">5. Certidão de antecedentes — Justiça Militar da União</div><div class="doc-sub">STM</div></div>
+      </div>
+      <div class="doc-steps">Acesse o link → Certidão Negativa → informe CPF e dados pessoais → baixe o PDF.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuita</span><span class="badge-g">Emitida na hora</span></div>
+        <a class="link-btn" href="https://www.stm.jus.br/servicos-ao-cidadao/atendimentoaocidadao/certidao-negativa" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- TRE-CE -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#E1F5EE"><i class="ti ti-scale" style="color:#0F6E56;font-size:18px"></i></div>
+        <div><div class="doc-name">6. Certidão de antecedentes — Justiça Eleitoral</div><div class="doc-sub">TRE-CE</div></div>
+      </div>
+      <div class="doc-steps">Acesse o site → Certidões → Certidão de Quitação Eleitoral e Antecedentes → informe CPF → baixe o PDF.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuita</span><span class="badge-a">Válida 90 dias</span></div>
+        <a class="link-btn" href="https://www.tre-ce.jus.br" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- TSE -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#FAEEDA"><i class="ti ti-checkbox" style="color:#BA7517;font-size:18px"></i></div>
+        <div><div class="doc-name">7. Certidão de quitação eleitoral — TSE</div><div class="doc-sub">Tribunal Superior Eleitoral</div></div>
+      </div>
+      <div class="doc-steps">Acesse o link → Certidões do Eleitor → Certidão de Quitação Eleitoral → informe CPF → baixe o PDF.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuita</span><span class="badge-g">Emitida na hora</span></div>
+        <a class="link-btn" href="https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral#/certidoes-eleitor/certidao-quitacao-eleitoral" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- CPF ACOMPANHANTE -->
+    <div class="doc-card">
+      <div class="doc-header">
+        <div class="doc-icon" style="background:#FAEEDA"><i class="ti ti-user-check" style="color:#BA7517;font-size:18px"></i></div>
+        <div><div class="doc-name">8. CPF do acompanhante — Receita Federal</div><div class="doc-sub">Somente se houver acompanhante</div></div>
+      </div>
+      <div class="doc-steps">Mesmo processo do item 1, utilizando o CPF da pessoa acompanhante.</div>
+      <div class="doc-footer">
+        <div class="badges"><span class="badge-g">Gratuito</span><span class="badge-a">Somente se houver acompanhante</span></div>
+        <a class="link-btn" href="https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp" target="_blank"><i class="ti ti-external-link"></i> Emitir agora</a>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="doc-card" style="background:#F6FBF0;border-color:#97C459">
+      <div class="sec-title" style="margin-bottom:0.75rem"><i class="ti ti-list-check" style="color:#639922"></i> Marque os documentos que já emitiu</div>
+      <div class="cert-checklist" id="certChecklist">
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">1</span> Regularização do CPF (Receita Federal)</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">2</span> Comprovante de endereço</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">3</span> Certidão TJCE</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">4</span> Certidão Justiça Federal (JFCE)</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">5</span> Certidão Justiça Militar (STM)</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">6</span> Certidão TRE-CE</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">7</span> Certidão de Quitação Eleitoral (TSE)</label>
+        <label class="cert-check-item" onclick="toggleCheck(this)"><input type="checkbox"><span class="cert-num">8</span> CPF do acompanhante (se houver)</label>
+      </div>
+      <div id="checkMsg" style="font-size:12px;color:#3B6D11;margin-top:0.5rem;display:none"><i class="ti ti-circle-check"></i> Ótimo! Você pode avançar para as regras do evento.</div>
+    </div>
+
+    <div class="nav-btns"><button class="btn-prev" onclick="goTo(0)"><i class="ti ti-arrow-left"></i> Voltar</button><button class="btn-next" onclick="goTo(2)">Próximo <i class="ti ti-arrow-right"></i></button></div>
+  </div>
+
+  <!-- SEÇÃO 3: REGRAS -->
+  <div class="section" id="s2">
+    <div class="sec-title"><i class="ti ti-clipboard-list"></i> Regras da Feirinha</div>
+    <div class="sec-desc">Leia com atenção. Sua participação está condicionada ao cumprimento das regras.</div>
+    <div class="warn-box"><i class="ti ti-alert-triangle"></i> O descumprimento das regras pode impedir sua participação em edições futuras.</div>
+    <ol class="rules-list">
+      <li>Ao chegar, desembarque seus produtos e <strong>retire o veículo</strong> em seguida para liberar o espaço.</li>
+      <li><strong>Não estacionar</strong> nas dependências do MPCE.</li>
+      <li>Instale seus produtos <strong>somente no espaço designado</strong> para você.</li>
+      <li>Cada expositor recebe <strong>1 mesa e 1 cadeira</strong>. Acompanhante confirmado recebe mais 1 cadeira.</li>
+      <li>Não é permitido retirar mais mesas e cadeiras além do destinado.</li>
+      <li>No dia do evento, banheiro do andar térreo e <strong>água serão disponibilizados</strong>.</li>
+      <li>Necessidade de ponto de energia deve ser <strong>informada e justificada</strong> no formulário.</li>
+      <li>A participação está condicionada ao preenchimento correto deste formulário e envio dos documentos.</li>
+      <li>Em cada edição, <strong>todas as modalidades</strong> participarão (alimentação, vestuário, acessórios, beleza, calçados, artesanato, plantas).</li>
+      <li>Expositores confirmados que <strong>faltarem sem justificativa</strong> não poderão participar da próxima edição.</li>
+      <li>Horários: <strong>início às 9h e encerramento às 15h</strong>, sem exceções.</li>
+      <li>Todas as pessoas do MPCE merecem respeito em seu ambiente de trabalho. <strong>Contamos com sua colaboração!</strong></li>
+    </ol>
+    <div style="margin-top:1rem">
+      <div class="check-group">
+        <label><input type="checkbox" id="chkRegras"> Li e estou ciente de todas as regras da Feirinha</label>
+      </div>
+    </div>
+    <div class="nav-btns"><button class="btn-prev" onclick="goTo(1)"><i class="ti ti-arrow-left"></i> Voltar</button><button class="btn-next" onclick="goTo(3)">Próximo <i class="ti ti-arrow-right"></i></button></div>
+  </div>
+
+  <!-- SEÇÃO 4: ENVIO -->
+  <div class="section" id="s3">
+    <div class="sec-title"><i class="ti ti-send"></i> Enviar cadastro</div>
+    <div class="sec-desc">Você está pronto! Agora é só clicar no botão abaixo para preencher o formulário oficial e enviar seus documentos.</div>
+
+    <div class="doc-card">
+      <div class="sec-title" style="margin-bottom:0.75rem;font-size:14px"><i class="ti ti-circle-check" style="color:#639922"></i> Checklist final</div>
+      <div class="check-group">
+        <label><input type="checkbox"> Emiti todos os documentos obrigatórios</label>
+        <label><input type="checkbox"> Li e concordo com as regras da Feirinha</label>
+        <label><input type="checkbox"> Tenho os PDFs prontos para fazer o upload no formulário</label>
+        <label><input type="checkbox"> CPF do acompanhante emitido (se houver acompanhante)</label>
+      </div>
+    </div>
+
+    <div class="info-box"><i class="ti ti-info-circle"></i> Ao clicar no botão abaixo, você será direcionado ao formulário oficial no Microsoft Forms. Lá você preencherá seus dados e fará o upload de todos os documentos.</div>
+
+    <!-- ⬇️ SUBSTITUA O HREF PELO LINK REAL DO SEU MICROSOFT FORMS -->
+    <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=bzZrh2mlhk2wysS1YiPp8R7wfpVkz55Dp8fHRjSaL4NUNDk1Q1JEUDI3SUJRWVdZWUM0N1I4OUJJRi4u" target="_blank" class="btn-forms">
+      <i class="ti ti-forms"></i> Ir para o formulário oficial
+    </a>
+    <div class="forms-hint">Você será redirecionado para o Microsoft Forms do MPCE</div>
+
+    <div class="nav-btns" style="margin-top:1.25rem"><button class="btn-prev" onclick="goTo(2)"><i class="ti ti-arrow-left"></i> Voltar</button><div></div></div>
+  </div>
+
+</div>
+
+<script>
+let cur=0;
+const secs=document.querySelectorAll('.section');
+const pills=document.querySelectorAll('.step-pill');
+const pbar=document.getElementById('pbar');
+
+function goTo(n){
+  secs[cur].classList.remove('active');
+  pills[cur].classList.remove('active');
+  cur=n;
+  secs[cur].classList.add('active');
+  pills[cur].classList.add('active');
+  pbar.style.width=((cur+1)/4*100)+'%';
+  window.scrollTo(0,0);
+}
+
+function toggleCheck(el){
+  setTimeout(()=>{
+    el.classList.toggle('checked', el.querySelector('input').checked);
+    const total = document.querySelectorAll('#certChecklist input[type=checkbox]').length;
+    const checked = document.querySelectorAll('#certChecklist input[type=checkbox]:checked').length;
+    document.getElementById('checkMsg').style.display = checked >= total - 1 ? 'block' : 'none';
+  }, 50);
+}
+</script>
+</body>
+</html>
