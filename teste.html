@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><title>Teste</title></head>
+<body>
+<input id="txt" type="text" placeholder="Digite algo">
+<button onclick="enviar()">Enviar</button>
+<div id="resultado"></div>
+<script>
+function enviar() {
+  const txt = document.getElementById('txt').value;
+  document.getElementById('resultado').innerText = 'Enviou: ' + txt;
+}
+</script>
+</body>
+</html>
